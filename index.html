@@ -131,6 +131,12 @@
       color: #666;
     }
     
+    .transportation-indicator {
+      color: #ed125f;
+      font-weight: bold;
+      margin-right: 5px;
+    }
+    
     .no-results {
       text-align: center;
       padding: 50px 20px;
@@ -253,6 +259,10 @@
       <strong>Important:</strong> Schedule is organized by school AND grade level
     </div>
     
+    <div class="note" style="margin-bottom: 15px; border-left-color: #17a2b8;">
+      <strong>School not listed?</strong> Please email <a href="mailto:community@thebryc.org" style="color: #ed125f; text-decoration: none;">community@thebryc.org</a>
+    </div>
+    
     <div style="display: flex; align-items: center;">
       <input type="text" id="searchBox" class="search-box" placeholder="Type your school name (e.g., McKinley, Baker, Catholic)..." autocomplete="off">
       <button id="clearButton" class="clear-button" style="display: none;">Clear</button>
@@ -272,90 +282,90 @@
         <h3>Search for Your School</h3>
         <p>Start typing your school name above to see your schedule</p>
         <p>The search will show all grade levels for your school</p>
+        <p style="margin-top: 20px; font-size: 14px; color: #ed125f;"><strong>** = Transportation Offered</strong></p>
       </div>
     </div>
   </div>
 
   <script>
-    // Complete schedule data
+    // Complete schedule data - Updated 2025-2026
     const allScheduleData = [
-      {school: "Arlington Preparatory Academy", grades: "All Grades", day: "Thursday", campus: "BRYC Downtown"},
-      {school: "Baker High School", grades: "9th–10th", day: "Wednesday", campus: "BRYC Downtown"},
-      {school: "Baker High School", grades: "11th & 12th", day: "Thursday", campus: "BRYC Downtown"},
-      {school: "Baton Rouge Magnet High School", grades: "9th, 10th, 12th", day: "Monday", campus: "BRYC Downtown"},
-      {school: "Baton Rouge Magnet High School", grades: "11th", day: "Wednesday", campus: "BRYC Downtown"},
-      {school: "Belaire Magnet High School", grades: "11th & 12th", day: "Monday", campus: "BRYC Airline"},
-      {school: "Belaire Magnet High School", grades: "9th & 10th", day: "Tuesday", campus: "BRYC Airline"},
-      {school: "Broadmoor Senior High School", grades: "11th & 12th", day: "Monday", campus: "BRYC Airline"},
-      {school: "Broadmoor Senior High School", grades: "8th-10th", day: "Tuesday", campus: "BRYC Airline"},
-      {school: "Brusly High School", grades: "All Grades", day: "Wednesday", campus: "BRYC Downtown"},
-      {school: "Catholic High School", grades: "9th,10th, 12th", day: "Monday", campus: "BRYC Downtown"},
-      {school: "Catholic High School", grades: "11th", day: "Wednesday", campus: "BRYC Downtown"},
-      {school: "Central High School", grades: "All Grades", day: "Thursday", campus: "BRYC Downtown"},
-      {school: "Collegiate Baton Rouge", grades: "9th & 10th", day: "Monday", campus: "BRYC Downtown"},
-      {school: "Collegiate Baton Rouge", grades: "11th", day: "Wednesday", campus: "BRYC Downtown"},
-      {school: "Collegiate Baton Rouge", grades: "12th", day: "Thursday", campus: "BRYC Downtown"},
-      {school: "Denham Springs High School", grades: "11th & 12th", day: "Monday", campus: "BRYC Airline"},
-      {school: "Denham Springs High School", grades: "9th & 10th", day: "Tuesday", campus: "BRYC Airline"},
-      {school: "Dutchtown High School", grades: "11th & 12th", day: "Monday", campus: "BRYC Airline"},
-      {school: "GEO Next Generation High School", grades: "All Grades", day: "Wednesday", campus: "BRYC Downtown"},
-      {school: "Geo Prep Mid City", grades: "8th", day: "Wednesday", campus: "BRYC Downtown"},
-      {school: "Glasgow Middle School", grades: "8th", day: "Wednesday", campus: "BRYC Downtown"},
-      {school: "Glen Oaks Magnet High School", grades: "10th", day: "Wednesday", campus: "BRYC Downtown"},
-      {school: "Great Hearts Harveston", grades: "9th", day: "Tuesday", campus: "BRYC Airline"},
-      {school: "Helix Aviation", grades: "9th & 10th", day: "Monday", campus: "BRYC Downtown"},
-      {school: "Helix Mentorship STEAM Academy", grades: "9th & 10th", day: "Monday", campus: "BRYC Downtown"},
-      {school: "Helix Mentorship STEAM Academy", grades: "11th", day: "Thursday", campus: "BRYC Downtown"},
-      {school: "Helix Mentorship STEAM Academy", grades: "12th", day: "Tuesday", campus: "BRYC Downtown"},
-      {school: "Home school (unaffiliated)", grades: "All Grades", day: "Varies", campus: "Varies"},
-      {school: "Indira Mura Institute", grades: "9th & 10th", day: "Tuesday", campus: "BRYC Airline"},
-      {school: "Istrouma Magnet High School", grades: "10th", day: "Wednesday", campus: "BRYC Downtown"},
-      {school: "Jehovah-Jireh Christian Academy", grades: "All Grades", day: "Monday", campus: "BRYC Downtown"},
-      {school: "Liberty Magnet High School", grades: "12th", day: "Monday", campus: "BRYC Downtown"},
-      {school: "Liberty Magnet High School", grades: "11th", day: "Tuesday", campus: "BRYC Downtown"},
-      {school: "Liberty Magnet High School", grades: "9th & 10th", day: "Thursday", campus: "BRYC Downtown"},
-      {school: "Live Oak High School", grades: "11th", day: "Monday", campus: "BRYC Airline"},
-      {school: "Livonia High School", grades: "All Grades", day: "Thursday", campus: "BRYC Downtown"},
-      {school: "Louisiana Key Academy", grades: "All Grades", day: "Wednesday", campus: "BRYC Downtown"},
-      {school: "LSU University Laboratory School", grades: "9th & 12th", day: "Monday", campus: "BRYC Downtown"},
-      {school: "Madison Preparatory Academy", grades: "9th, 10th, 12th", day: "Monday", campus: "BRYC Downtown"},
-      {school: "Madison Preparatory Academy", grades: "11th", day: "Wednesday", campus: "BRYC Downtown"},
-      {school: "Mayfair Laboratory School", grades: "8th", day: "Tuesday", campus: "BRYC Airline"},
-      {school: "McKinley Senior High School", grades: "9th & 12th", day: "Monday", campus: "BRYC Downtown"},
-      {school: "McKinley Senior High School", grades: "10th & 11th", day: "Wednesday", campus: "BRYC Downtown"},
-      {school: "McKinley Middle Magnet School", grades: "8th", day: "Wednesday", campus: "BRYC Downtown"},
-      {school: "MSA East Academy", grades: "12th", day: "Monday", campus: "BRYC Downtown"},
-      {school: "MSA West High School", grades: "8th-10th", day: "Tuesday", campus: "Campus"},
-      {school: "MSA West Middle/High School", grades: "9th", day: "Thursday", campus: "BRYC Downtown"},
-      {school: "Northeast High School", grades: "9th-12th", day: "Thursday", campus: "BRYC Downtown"},
-      {school: "Northeast High School", grades: "8th", day: "Wednesday", campus: "BRYC Downtown"},
-      {school: "Northwestern Middle School", grades: "8th", day: "Tuesday", campus: "BRYC Airline"},
-      {school: "Other", grades: "All Grades", day: "Varies", campus: "Varies"},
-      {school: "Park Forest Middle School", grades: "8th", day: "Wednesday", campus: "BRYC Downtown"},
-      {school: "Plaquemine High School", grades: "All Grades", day: "Thursday", campus: "BRYC Downtown"},
-      {school: "Port Allen High School", grades: "11th & 12th", day: "Thursday", campus: "BRYC Downtown"},
-      {school: "Prairieville High School", grades: "11th & 12th", day: "Monday", campus: "BRYC Airline"},
-      {school: "Prairieville High School", grades: "9th & 10th", day: "Tuesday", campus: "BRYC Airline"},
-      {school: "Scotlandville Magnet High School", grades: "All Grades", day: "Thursday", campus: "BRYC Downtown"},
-      {school: "Scotlandville Pre-Engineering Academy", grades: "8th", day: "Wednesday", campus: "BRYC Downtown"},
-      {school: "Sherwood Middle Academic Academy", grades: "8th", day: "Wednesday", campus: "BRYC Downtown"},
-      {school: "Slaughter Community Charter School", grades: "12th", day: "Thursday", campus: "BRYC Downtown"},
-      {school: "Southeast Middle School", grades: "8th", day: "Tuesday", campus: "BRYC Airline"},
-      {school: "Southern University Lab", grades: "All Grades", day: "Thursday", campus: "BRYC Downtown"},
-      {school: "St. Joseph's Academy", grades: "All Grades", day: "Monday", campus: "BRYC Downtown"},
-      {school: "St. Michael High School", grades: "12th", day: "Monday", campus: "BRYC Airline"},
-      {school: "Tara High School", grades: "11th & 12th", day: "Monday", campus: "BRYC Airline"},
-      {school: "Tara High School", grades: "9th & 10th", day: "Tuesday", campus: "BRYC Airline"},
-      {school: "The Dunham School", grades: "10th", day: "Tuesday", campus: "BRYC Airline"},
-      {school: "Thrive Academy", grades: "11th", day: "Thursday", campus: "BRYC Downtown"},
-      {school: "University View Academy", grades: "All Grades", day: "Varies", campus: "Varies"},
-      {school: "Walker High School", grades: "11th & 12th", day: "Monday", campus: "BRYC Airline"},
-      {school: "West Feliciana High School", grades: "12th", day: "Thursday", campus: "BRYC Downtown"},
-      {school: "Westdale Middle School", grades: "8th", day: "Wednesday", campus: "BRYC Downtown"},
-      {school: "Woodlawn High School", grades: "11th & 12th", day: "Monday", campus: "BRYC Airline"},
-      {school: "Woodlawn High School", grades: "9th & 10th", day: "Tuesday", campus: "BRYC Airline"},
-      {school: "Woodlawn Middle School", grades: "8th", day: "Tuesday", campus: "BRYC Airline"},
-      {school: "Zachary High School", grades: "All Grades", day: "Thursday", campus: "BRYC Downtown"}
+      {school: "Arlington Prep", grades: "All Grades", day: "Thursday", campus: "Downtown", transportation: false},
+      {school: "Baker High School", grades: "9th & 10th", day: "Wednesday", campus: "Downtown", transportation: false},
+      {school: "Baker High School", grades: "11th & 12th", day: "Thursday", campus: "Downtown", transportation: false},
+      {school: "Baton Rouge High School", grades: "9th, 10th, 12th", day: "Monday", campus: "Downtown", transportation: true},
+      {school: "Baton Rouge High School", grades: "11th", day: "Wednesday", campus: "Downtown", transportation: true},
+      {school: "Belaire High School", grades: "11th & 12th", day: "Monday", campus: "Airline", transportation: true},
+      {school: "Belaire High School", grades: "9th & 10th", day: "Tuesday", campus: "Airline", transportation: true},
+      {school: "Broadmoor High School", grades: "11th & 12th", day: "Monday", campus: "Airline", transportation: true},
+      {school: "Broadmoor High School", grades: "8th-10th", day: "Tuesday", campus: "Airline", transportation: true},
+      {school: "Brusly High School", grades: "All Grades", day: "Thursday", campus: "Downtown", transportation: true},
+      {school: "Catholic High School", grades: "9th, 10th, 12th", day: "Monday", campus: "Downtown", transportation: false},
+      {school: "Catholic High School", grades: "11th", day: "Wednesday", campus: "Downtown", transportation: false},
+      {school: "Central High School", grades: "All Grades", day: "Thursday", campus: "Downtown", transportation: false},
+      {school: "Collegiate Baton Rouge", grades: "9th & 10th", day: "Monday", campus: "Downtown", transportation: true},
+      {school: "Collegiate Baton Rouge", grades: "11th", day: "Wednesday", campus: "Downtown", transportation: true},
+      {school: "Collegiate Baton Rouge", grades: "12th", day: "Thursday", campus: "Downtown", transportation: true},
+      {school: "Denham Springs High School", grades: "11th & 12th", day: "Monday", campus: "Airline", transportation: false},
+      {school: "Denham Springs High School", grades: "9th & 10th", day: "Tuesday", campus: "Airline", transportation: false},
+      {school: "The Dunham School", grades: "10th", day: "Tuesday", campus: "Airline", transportation: false},
+      {school: "Dutchtown High School", grades: "11th & 12th", day: "Monday", campus: "Airline", transportation: true},
+      {school: "GEO Next Generation High School", grades: "All Grades", day: "Wednesday", campus: "Downtown", transportation: false},
+      {school: "Geo Prep Mid City", grades: "8th", day: "Wednesday", campus: "Downtown", transportation: true},
+      {school: "Glasgow Middle School", grades: "8th", day: "Wednesday", campus: "Downtown", transportation: false},
+      {school: "Glen Oaks Magnet High School", grades: "10th", day: "Wednesday", campus: "Downtown", transportation: false},
+      {school: "Great Hearts Harveston", grades: "9th", day: "Tuesday", campus: "Airline", transportation: false},
+      {school: "Helix Aviation", grades: "9th & 10th", day: "Monday", campus: "Downtown", transportation: false},
+      {school: "Helix Mentorship STEAM Academy", grades: "9th & 10th", day: "Monday", campus: "Downtown", transportation: true},
+      {school: "Helix Mentorship STEAM Academy", grades: "11th", day: "Thursday", campus: "Downtown", transportation: true},
+      {school: "Helix Mentorship STEAM Academy", grades: "12th", day: "Tuesday", campus: "Downtown", transportation: true},
+      {school: "Home school (unaffiliated)", grades: "All Grades", day: "Varies", campus: "Varies", transportation: false},
+      {school: "Indira Mura Institute", grades: "9th & 10th", day: "Tuesday", campus: "Airline", transportation: false},
+      {school: "Istrouma Magnet High School", grades: "10th", day: "Wednesday", campus: "Downtown", transportation: false},
+      {school: "Jehovah-Jireh Christian Academy", grades: "All Grades", day: "Monday", campus: "Downtown", transportation: false},
+      {school: "Liberty Magnet High School", grades: "12th", day: "Monday", campus: "Downtown", transportation: true},
+      {school: "Liberty Magnet High School", grades: "11th", day: "Tuesday", campus: "Downtown", transportation: true},
+      {school: "Liberty Magnet High School", grades: "9th & 10th", day: "Thursday", campus: "Downtown", transportation: true},
+      {school: "Live Oak High School", grades: "11th", day: "Monday", campus: "Airline", transportation: false},
+      {school: "Livonia High School", grades: "All Grades", day: "Thursday", campus: "Downtown", transportation: true},
+      {school: "Louisiana Key Academy", grades: "All Grades", day: "Wednesday", campus: "Downtown", transportation: false},
+      {school: "LSU Lab (U-High)", grades: "9th & 12th", day: "Monday", campus: "Downtown", transportation: false},
+      {school: "Madison Preparatory Academy", grades: "9th, 10th, 12th", day: "Monday", campus: "Downtown", transportation: true},
+      {school: "Madison Preparatory Academy", grades: "11th", day: "Wednesday", campus: "Downtown", transportation: true},
+      {school: "Mayfair Laboratory School", grades: "8th", day: "Tuesday", campus: "Airline", transportation: false},
+      {school: "McKinley High School", grades: "9th & 12th", day: "Monday", campus: "Downtown", transportation: true},
+      {school: "McKinley High School", grades: "10th & 11th", day: "Wednesday", campus: "Downtown", transportation: true},
+      {school: "McKinley Middle Magnet School", grades: "8th", day: "Wednesday", campus: "Downtown", transportation: false},
+      {school: "MSA East Academy", grades: "12th", day: "Monday", campus: "Downtown", transportation: false},
+      {school: "MSA West High School", grades: "8th-10th", day: "Tuesday", campus: "Downtown", transportation: true},
+      {school: "MSA West Middle/High School", grades: "9th", day: "Thursday", campus: "Downtown", transportation: true},
+      {school: "Northeast High School", grades: "9th-12th", day: "Thursday", campus: "Downtown", transportation: true},
+      {school: "Northeast High School", grades: "8th", day: "Wednesday", campus: "Downtown", transportation: true},
+      {school: "Northwestern Middle School", grades: "8th", day: "Tuesday", campus: "Airline", transportation: false},
+      {school: "Park Forest Middle School", grades: "8th", day: "Wednesday", campus: "Downtown", transportation: false},
+      {school: "Plaquemine High School", grades: "All Grades", day: "Thursday", campus: "Downtown", transportation: true},
+      {school: "Port Allen High School", grades: "11th & 12th", day: "Thursday", campus: "Downtown", transportation: true},
+      {school: "Prairieville High School", grades: "11th & 12th", day: "Monday", campus: "Airline", transportation: false},
+      {school: "Prairieville High School", grades: "9th & 10th", day: "Tuesday", campus: "Airline", transportation: false},
+      {school: "Scotlandville Magnet High School", grades: "All Grades", day: "Thursday", campus: "Downtown", transportation: true},
+      {school: "Scotlandville Pre-Engineering Academy", grades: "8th", day: "Wednesday", campus: "Downtown", transportation: false},
+      {school: "Sherwood Middle Academic Academy", grades: "8th", day: "Wednesday", campus: "Downtown", transportation: false},
+      {school: "Slaughter Community Charter School", grades: "12th", day: "Thursday", campus: "Downtown", transportation: false},
+      {school: "Southeast Middle School", grades: "8th", day: "Tuesday", campus: "Airline", transportation: false},
+      {school: "Southern University Lab", grades: "All Grades", day: "Thursday", campus: "Downtown", transportation: true},
+      {school: "St. Joseph's Academy", grades: "All Grades", day: "Monday", campus: "Downtown", transportation: false},
+      {school: "St. Michael High School", grades: "12th", day: "Monday", campus: "Airline", transportation: false},
+      {school: "Tara High School", grades: "11th & 12th", day: "Monday", campus: "Airline", transportation: true},
+      {school: "Tara High School", grades: "9th & 10th", day: "Tuesday", campus: "Airline", transportation: true},
+      {school: "Thrive Academy", grades: "11th", day: "Thursday", campus: "Downtown", transportation: false},
+      {school: "University View Academy", grades: "All Grades", day: "Varies", campus: "Varies", transportation: false},
+      {school: "Walker High School", grades: "11th & 12th", day: "Monday", campus: "Airline", transportation: false},
+      {school: "West Feliciana High School", grades: "12th", day: "Thursday", campus: "Downtown", transportation: false},
+      {school: "Westdale Middle School", grades: "8th", day: "Wednesday", campus: "Downtown", transportation: false},
+      {school: "Woodlawn High School", grades: "11th & 12th", day: "Monday", campus: "Airline", transportation: true},
+      {school: "Woodlawn High School", grades: "9th & 10th", day: "Tuesday", campus: "Airline", transportation: true},
+      {school: "Woodlawn Middle School", grades: "8th", day: "Tuesday", campus: "Airline", transportation: true},
+      {school: "Zachary High School", grades: "All Grades", day: "Thursday", campus: "Downtown", transportation: true}
     ];
 
     let currentResults = [];
@@ -425,10 +435,10 @@
         );
         
         tableHTML += '<tr>';
-        tableHTML += `<td>${highlightedSchool}</td>`;
+        tableHTML += `<td>${highlightedSchool}${item.transportation ? '<span class="transportation-indicator">**</span>' : ''}</td>`;
         tableHTML += `<td>${item.grades}</td>`;
         tableHTML += `<td class="day-cell">${item.day}</td>`;
-        tableHTML += `<td class="campus-cell">${item.campus}<span class="campus-info">${item.campus}</span></td>`;
+        tableHTML += `<td class="campus-cell">${item.campus}</td>`;
         tableHTML += '</tr>';
       });
       
