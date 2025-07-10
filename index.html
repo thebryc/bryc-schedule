@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BRYC School Schedule Search</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+    
+    * {
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Open Sans', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f5f5f5;
+      line-height: 1.6;
+    }
+    
+    .search-container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+    
+    .logo-section {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+    
+    .logo-section img {
+      height: 70px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+    }
+    
+    .logo-section h1 {
+      margin: 0;
+      color: #333;
+      font-size: 28px;
+      font-weight: 600;
+    }
+    
+    .note {
+      text-align: center;
+      color: #666;
+      margin-bottom: 25px;
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      border-left: 4px solid #ed125f;
+    }
+    
+    .search-box {
+      width: 100%;
+      padding: 15px;
+      font-size: 18px;
+      font-family: 'Open Sans', Arial, sans-serif;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      transition: border-color 0.3s ease;
+    }
+    
+    .search-box:focus {
+      outline: none;
+      border-color: #ed125f;
+      box-shadow: 0 0 0 3px rgba(237, 18, 95, 0.1);
+    }
+    
+    .results-container {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+    
+    .results-header {
+      background: linear-gradient(135deg, #ed125f, #c2104f);
+      color: white;
+      padding: 20px;
+      font-weight: 600;
+      text-align: center;
+      font-size: 20px;
+    }
+    
+    .schedule-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .schedule-table th {
+      background: #f8f9fa;
+      padding: 15px 12px;
+      text-align: left;
+      font-weight: 600;
+      border-bottom: 2px solid #dee2e6;
+      color: #495057;
+    }
+    
+    .schedule-table td {
+      padding: 15px 12px;
+      border-bottom: 1px solid #dee2e6;
+      vertical-align: top;
+    }
+    
+    .schedule-table tr:hover {
+      background-color: #f8f9fa;
+      transition: background-color 0.2s ease;
+    }
+    
+    .schedule-table tr:nth-child(even) {
+      background-color: #fafafa;
+    }
+    
+    .schedule-table tr:nth-child(even):hover {
+      background-color: #f0f0f0;
+    }
+    
+    .day-cell {
+      font-weight: 600;
+      color: #ed125f;
+    }
+    
+    .campus-cell {
+      font-size: 14px;
+      color: #666;
+    }
+    
+    .no-results {
+      text-align: center;
+      padding: 50px 20px;
+      color: #666;
+      font-style: italic;
+    }
+    
+    .no-results-icon {
+      font-size: 48px;
+      margin-bottom: 15px;
+      opacity: 0.5;
+    }
+    
+    .instructions {
+      text-align: center;
+      padding: 50px 20px;
+      color: #666;
+    }
+    
+    .instructions-icon {
+      font-size: 48px;
+      margin-bottom: 15px;
+      color: #ed125f;
+    }
+    
+    .highlight {
+      background-color: #fce8f0;
+      color: #ed125f;
+      font-weight: 600;
+      padding: 2px 4px;
+      border-radius: 3px;
+    }
+    
+    .total-results {
+      background: linear-gradient(135deg, #fce8f0, #f8e6ec);
+      padding: 15px 20px;
+      border-bottom: 1px solid #ed125f;
+      font-weight: 600;
+      color: #b50e47;
+      text-align: center;
+    }
+    
+    .clear-button {
+      background: #6c757d;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      margin-left: 10px;
+      transition: background-color 0.3s ease;
+    }
+    
+    .clear-button:hover {
+      background: #5a6268;
+    }
+    
+    @media (max-width: 768px) {
+      body {
+        padding: 15px;
+      }
+      
+      .search-container {
+        padding: 20px;
+      }
+      
+      .logo-section h1 {
+        font-size: 24px;
+      }
+      
+      .search-box {
+        font-size: 16px;
+        padding: 12px;
+      }
+      
+      .schedule-table {
+        font-size: 14px;
+      }
+      
+      .schedule-table th,
+      .schedule-table td {
+        padding: 10px 8px;
+      }
+      
+      .results-header {
+        font-size: 18px;
+        padding: 15px;
+      }
+    }
+    
+    @media (max-width: 600px) {
+      .schedule-table th:nth-child(4),
+      .schedule-table td:nth-child(4) {
+        display: none;
+      }
+      
+      .campus-info {
+        font-size: 12px;
+        color: #999;
+        display: block;
+        margin-top: 3px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="search-container">
+    <div class="logo-section">
+      <!-- Option 1: Text-based logo (currently active) -->
+      <div style="width: 70px; height: 70px; background: linear-gradient(135deg, #ed125f, #c2104f); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; color: white; font-weight: bold; font-size: 24px;">BRYC</div>
+      
+      <!-- Option 2: Replace with your logo URL -->
+      <!-- <img src="YOUR_LOGO_URL_HERE" alt="BRYC Logo"> -->
+      
+      <h1>Find Your School Schedule</h1>
+    </div>
+    
+    <div class="note">
+      <strong>Important:</strong> Schedule is organized by school AND grade level
+    </div>
+    
+    <div style="display: flex; align-items: center;">
+      <input type="text" id="searchBox" class="search-box" placeholder="Type your school name (e.g., McKinley, Baker, Catholic)..." autocomplete="off">
+      <button id="clearButton" class="clear-button" style="display: none;">Clear</button>
+    </div>
+  </div>
+
+  <div class="results-container">
+    <div class="results-header">
+      <div id="resultsHeader">2025-2026 BRYC Program Schedule</div>
+    </div>
+    
+    <div id="resultsCount" class="total-results" style="display: none;"></div>
+    
+    <div id="resultsTable">
+      <div class="instructions">
+        <div class="instructions-icon">🔍</div>
+        <h3>Search for Your School</h3>
+        <p>Start typing your school name above to see your schedule</p>
+        <p>The search will show all grade levels for your school</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Complete schedule data
+    const allScheduleData = [
+      {school: "Arlington Preparatory Academy", grades: "All Grades", day: "Thursday", campus: "BRYC Downtown"},
+      {school: "Baker High School", grades: "9th–10th", day: "Wednesday", campus: "BRYC Downtown"},
+      {school: "Baker High School", grades: "11th & 12th", day: "Thursday", campus: "BRYC Downtown"},
+      {school: "Baton Rouge Magnet High School", grades: "9th, 10th, 12th", day: "Monday", campus: "BRYC Downtown"},
+      {school: "Baton Rouge Magnet High School", grades: "11th", day: "Wednesday", campus: "BRYC Downtown"},
+      {school: "Belaire Magnet High School", grades: "11th & 12th", day: "Monday", campus: "BRYC Airline"},
+      {school: "Belaire Magnet High School", grades: "9th & 10th", day: "Tuesday", campus: "BRYC Airline"},
+      {school: "Broadmoor Senior High School", grades: "11th & 12th", day: "Monday", campus: "BRYC Airline"},
+      {school: "Broadmoor Senior High School", grades: "8th-10th", day: "Tuesday", campus: "BRYC Airline"},
+      {school: "Brusly High School", grades: "All Grades", day: "Wednesday", campus: "BRYC Downtown"},
+      {school: "Catholic High School", grades: "9th,10th, 12th", day: "Monday", campus: "BRYC Downtown"},
+      {school: "Catholic High School", grades: "11th", day: "Wednesday", campus: "BRYC Downtown"},
+      {school: "Central High School", grades: "All Grades", day: "Thursday", campus: "BRYC Downtown"},
+      {school: "Collegiate Baton Rouge", grades: "9th & 10th", day: "Monday", campus: "BRYC Downtown"},
+      {school: "Collegiate Baton Rouge", grades: "11th", day: "Wednesday", campus: "BRYC Downtown"},
+      {school: "Collegiate Baton Rouge", grades: "12th", day: "Thursday", campus: "BRYC Downtown"},
+      {school: "Denham Springs High School", grades: "11th & 12th", day: "Monday", campus: "BRYC Airline"},
+      {school: "Denham Springs High School", grades: "9th & 10th", day: "Tuesday", campus: "BRYC Airline"},
+      {school: "Dutchtown High School", grades: "11th & 12th", day: "Monday", campus: "BRYC Airline"},
+      {school: "GEO Next Generation High School", grades: "All Grades", day: "Wednesday", campus: "BRYC Downtown"},
+      {school: "Geo Prep Mid City", grades: "8th", day: "Wednesday", campus: "BRYC Downtown"},
+      {school: "Glasgow Middle School", grades: "8th", day: "Wednesday", campus: "BRYC Downtown"},
+      {school: "Glen Oaks Magnet High School", grades: "10th", day: "Wednesday", campus: "BRYC Downtown"},
+      {school: "Great Hearts Harveston", grades: "9th", day: "Tuesday", campus: "BRYC Airline"},
+      {school: "Helix Aviation", grades: "9th & 10th", day: "Monday", campus: "BRYC Downtown"},
+      {school: "Helix Mentorship STEAM Academy", grades: "9th & 10th", day: "Monday", campus: "BRYC Downtown"},
+      {school: "Helix Mentorship STEAM Academy", grades: "11th", day: "Thursday", campus: "BRYC Downtown"},
+      {school: "Helix Mentorship STEAM Academy", grades: "12th", day: "Tuesday", campus: "BRYC Downtown"},
+      {school: "Home school (unaffiliated)", grades: "All Grades", day: "Varies", campus: "Varies"},
+      {school: "Indira Mura Institute", grades: "9th & 10th", day: "Tuesday", campus: "BRYC Airline"},
+      {school: "Istrouma Magnet High School", grades: "10th", day: "Wednesday", campus: "BRYC Downtown"},
+      {school: "Jehovah-Jireh Christian Academy", grades: "All Grades", day: "Monday", campus: "BRYC Downtown"},
+      {school: "Liberty Magnet High School", grades: "12th", day: "Monday", campus: "BRYC Downtown"},
+      {school: "Liberty Magnet High School", grades: "11th", day: "Tuesday", campus: "BRYC Downtown"},
+      {school: "Liberty Magnet High School", grades: "9th & 10th", day: "Thursday", campus: "BRYC Downtown"},
+      {school: "Live Oak High School", grades: "11th", day: "Monday", campus: "BRYC Airline"},
+      {school: "Livonia High School", grades: "All Grades", day: "Thursday", campus: "BRYC Downtown"},
+      {school: "Louisiana Key Academy", grades: "All Grades", day: "Wednesday", campus: "BRYC Downtown"},
+      {school: "LSU University Laboratory School", grades: "9th & 12th", day: "Monday", campus: "BRYC Downtown"},
+      {school: "Madison Preparatory Academy", grades: "9th, 10th, 12th", day: "Monday", campus: "BRYC Downtown"},
+      {school: "Madison Preparatory Academy", grades: "11th", day: "Wednesday", campus: "BRYC Downtown"},
+      {school: "Mayfair Laboratory School", grades: "8th", day: "Tuesday", campus: "BRYC Airline"},
+      {school: "McKinley Senior High School", grades: "9th & 12th", day: "Monday", campus: "BRYC Downtown"},
+      {school: "McKinley Senior High School", grades: "10th & 11th", day: "Wednesday", campus: "BRYC Downtown"},
+      {school: "McKinley Middle Magnet School", grades: "8th", day: "Wednesday", campus: "BRYC Downtown"},
+      {school: "MSA East Academy", grades: "12th", day: "Monday", campus: "BRYC Downtown"},
+      {school: "MSA West High School", grades: "8th-10th", day: "Tuesday", campus: "Campus"},
+      {school: "MSA West Middle/High School", grades: "9th", day: "Thursday", campus: "BRYC Downtown"},
+      {school: "Northeast High School", grades: "9th-12th", day: "Thursday", campus: "BRYC Downtown"},
+      {school: "Northeast High School", grades: "8th", day: "Wednesday", campus: "BRYC Downtown"},
+      {school: "Northwestern Middle School", grades: "8th", day: "Tuesday", campus: "BRYC Airline"},
+      {school: "Other", grades: "All Grades", day: "Varies", campus: "Varies"},
+      {school: "Park Forest Middle School", grades: "8th", day: "Wednesday", campus: "BRYC Downtown"},
+      {school: "Plaquemine High School", grades: "All Grades", day: "Thursday", campus: "BRYC Downtown"},
+      {school: "Port Allen High School", grades: "11th & 12th", day: "Thursday", campus: "BRYC Downtown"},
+      {school: "Prairieville High School", grades: "11th & 12th", day: "Monday", campus: "BRYC Airline"},
+      {school: "Prairieville High School", grades: "9th & 10th", day: "Tuesday", campus: "BRYC Airline"},
+      {school: "Scotlandville Magnet High School", grades: "All Grades", day: "Thursday", campus: "BRYC Downtown"},
+      {school: "Scotlandville Pre-Engineering Academy", grades: "8th", day: "Wednesday", campus: "BRYC Downtown"},
+      {school: "Sherwood Middle Academic Academy", grades: "8th", day: "Wednesday", campus: "BRYC Downtown"},
+      {school: "Slaughter Community Charter School", grades: "12th", day: "Thursday", campus: "BRYC Downtown"},
+      {school: "Southeast Middle School", grades: "8th", day: "Tuesday", campus: "BRYC Airline"},
+      {school: "Southern University Lab", grades: "All Grades", day: "Thursday", campus: "BRYC Downtown"},
+      {school: "St. Joseph's Academy", grades: "All Grades", day: "Monday", campus: "BRYC Downtown"},
+      {school: "St. Michael High School", grades: "12th", day: "Monday", campus: "BRYC Airline"},
+      {school: "Tara High School", grades: "11th & 12th", day: "Monday", campus: "BRYC Airline"},
+      {school: "Tara High School", grades: "9th & 10th", day: "Tuesday", campus: "BRYC Airline"},
+      {school: "The Dunham School", grades: "10th", day: "Tuesday", campus: "BRYC Airline"},
+      {school: "Thrive Academy", grades: "11th", day: "Thursday", campus: "BRYC Downtown"},
+      {school: "University View Academy", grades: "All Grades", day: "Varies", campus: "Varies"},
+      {school: "Walker High School", grades: "11th & 12th", day: "Monday", campus: "BRYC Airline"},
+      {school: "West Feliciana High School", grades: "12th", day: "Thursday", campus: "BRYC Downtown"},
+      {school: "Westdale Middle School", grades: "8th", day: "Wednesday", campus: "BRYC Downtown"},
+      {school: "Woodlawn High School", grades: "11th & 12th", day: "Monday", campus: "BRYC Airline"},
+      {school: "Woodlawn High School", grades: "9th & 10th", day: "Tuesday", campus: "BRYC Airline"},
+      {school: "Woodlawn Middle School", grades: "8th", day: "Tuesday", campus: "BRYC Airline"},
+      {school: "Zachary High School", grades: "All Grades", day: "Thursday", campus: "BRYC Downtown"}
+    ];
+
+    let currentResults = [];
+    
+    // Get DOM elements
+    const searchBox = document.getElementById('searchBox');
+    const clearButton = document.getElementById('clearButton');
+    const resultsTable = document.getElementById('resultsTable');
+    const resultsCount = document.getElementById('resultsCount');
+    
+    // Search functionality
+    searchBox.addEventListener('input', function(e) {
+      const searchTerm = e.target.value.toLowerCase().trim();
+      
+      // Show/hide clear button
+      clearButton.style.display = searchTerm ? 'block' : 'none';
+      
+      if (searchTerm === '') {
+        showInstructions();
+        return;
+      }
+      
+      // Filter results
+      currentResults = allScheduleData.filter(function(item) {
+        return item.school.toLowerCase().includes(searchTerm);
+      });
+      
+      displayResults(currentResults, searchTerm);
+    });
+    
+    // Clear button functionality
+    clearButton.addEventListener('click', function() {
+      searchBox.value = '';
+      clearButton.style.display = 'none';
+      showInstructions();
+      searchBox.focus();
+    });
+    
+    function displayResults(results, searchTerm) {
+      if (results.length === 0) {
+        resultsTable.innerHTML = `
+          <div class="no-results">
+            <div class="no-results-icon">😔</div>
+            <h3>No schools found</h3>
+            <p>No schools found matching "${searchTerm}"</p>
+            <p>Try a different search term or check your spelling</p>
+          </div>
+        `;
+        resultsCount.style.display = 'none';
+        return;
+      }
+      
+      // Show results count
+      resultsCount.textContent = `${results.length} result${results.length !== 1 ? 's' : ''} found for "${searchTerm}"`;
+      resultsCount.style.display = 'block';
+      
+      // Create table
+      let tableHTML = '<table class="schedule-table">';
+      tableHTML += '<thead><tr><th>School</th><th>Grade(s)</th><th>Day</th><th>Campus</th></tr></thead>';
+      tableHTML += '<tbody>';
+      
+      results.forEach(function(item) {
+        // Highlight search term in school name
+        const highlightedSchool = item.school.replace(
+          new RegExp('(' + searchTerm + ')', 'gi'),
+          '<span class="highlight">$1</span>'
+        );
+        
+        tableHTML += '<tr>';
+        tableHTML += `<td>${highlightedSchool}</td>`;
+        tableHTML += `<td>${item.grades}</td>`;
+        tableHTML += `<td class="day-cell">${item.day}</td>`;
+        tableHTML += `<td class="campus-cell">${item.campus}<span class="campus-info">${item.campus}</span></td>`;
+        tableHTML += '</tr>';
+      });
+      
+      tableHTML += '</tbody></table>';
+      resultsTable.innerHTML = tableHTML;
+    }
+    
+    function showInstructions() {
+      resultsTable.innerHTML = `
+        <div class="instructions">
+          <div class="instructions-icon">🔍</div>
+          <h3>Search for Your School</h3>
+          <p>Start typing your school name above to see your schedule</p>
+          <p>The search will show all grade levels for your school</p>
+        </div>
+      `;
+      resultsCount.style.display = 'none';
+    }
+    
+    // Auto-focus search box when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      searchBox.focus();
+    });
+  </script>
+</body>
+</html>
